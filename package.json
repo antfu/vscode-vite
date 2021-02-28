@@ -24,15 +24,10 @@
   ],
   "main": "./dist/extension.js",
   "extensionPack": [
-    "auchenberg.vscode-browser-preview"
+    "antfu.vscode-browse-lite"
   ],
   "contributes": {
     "commands": [
-      {
-        "command": "vite.start",
-        "category": "Vite",
-        "title": "Restart Vite Server"
-      },
       {
         "command": "vite.stop",
         "category": "Vite",
@@ -41,7 +36,17 @@
       {
         "command": "vite.restart",
         "category": "Vite",
-        "title": "Restart Vite Server"
+        "title": "Start Vite Server"
+      },
+      {
+        "command": "vite.open",
+        "category": "Vite",
+        "title": "Open Vite app"
+      },
+      {
+        "command": "vite.showCommands",
+        "category": "Vite",
+        "title": "Show commands"
       }
     ],
     "configuration": {
