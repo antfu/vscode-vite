@@ -2,7 +2,7 @@ import { join } from 'path'
 import fs from 'fs'
 import { commands, env, ExtensionContext, QuickPickItem, StatusBarAlignment, StatusBarItem, Terminal, Uri, window } from 'vscode'
 import { Config } from './config'
-import { tryPort, timeout } from './utils'
+import { tryPort, waitFor } from './utils'
 
 let terminal: Terminal
 let statusBar: StatusBarItem
@@ -25,11 +25,13 @@ async function start(searchPort = false) {
   if (!port || searchPort)
     port = await tryPort(Config.port)
   url = `${Config.https ? 'https' : 'http'}://${Config.host}:${port}${Config.base}`
-  window.showInformationMessage(`⚡️ Vite started at ${url}`)
+  if (Config.notifyOnStarted)
+    window.showInformationMessage(`⚡️ Vite started at ${url}`)
 
   ensureTerminal()
   terminal.sendText(`npx vite --port ${port}`)
-  terminal.show(false)
+  if (Config.showTerminal)
+    terminal.show(false)
   active = true
 
   ensureStatusBar()
@@ -61,8 +63,11 @@ function ensureStatusBar() {
 
 async function open(ensureActive = false, browser = Config.browser) {
   if (ensureActive && !active) {
-    await start()
-    await timeout(Config.delay)
+    const { url } = await start()
+    if (!await waitFor(url, Config.pingInterval, Config.maximumTimeout)) {
+      window.showErrorMessage('❗️ Failed to start the server')
+      stop()
+    }
   }
   if (active && url) {
     if (browser === 'system') {

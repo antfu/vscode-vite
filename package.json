@@ -96,6 +96,26 @@
           "type": "boolean",
           "default": false,
           "description": "Enable https"
+        },
+        "vite.pingInterval": {
+          "type": "number",
+          "default": 200,
+          "description": "Interval in mileseconds to try on pinging for server to start"
+        },
+        "vite.maximumTimeout": {
+          "type": "number",
+          "default": 30000,
+          "description": "Maximum timeout in mileseconds waiting for server to start"
+        },
+        "vite.showTerminal": {
+          "type": "boolean",
+          "default": true,
+          "description": "Force on terminal when server starts"
+        },
+        "vite.notifyOnStarted": {
+          "type": "boolean",
+          "default": true,
+          "description": "Send notification when server starts"
         }
       }
     }

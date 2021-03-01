@@ -17,8 +17,20 @@ export const Config = {
     return getConfig<'system' | 'embedded'>('browserType', 'embedded')!
   },
 
-  get delay() {
-    return getConfig('startupDelay', 2000)!
+  get pingInterval() {
+    return getConfig('pingInterval', 200)!
+  },
+
+  get maximumTimeout() {
+    return getConfig('maximumTimeout', 30_000)!
+  },
+
+  get showTerminal() {
+    return getConfig('showTerminal', true)!
+  },
+
+  get notifyOnStarted() {
+    return getConfig('notifyOnStarted', true)!
   },
 
   get port() {
