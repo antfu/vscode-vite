@@ -36,7 +36,7 @@ async function start(searchPort = false) {
 
   ensureStatusBar()
 
-  statusBar.text = '$(zap) Vite'
+  statusBar.text = '$(symbol-event) Vite'
   statusBar.color = '#ebb549'
 
   return { url, port }
@@ -88,7 +88,7 @@ interface CommandPickItem extends QuickPickItem {
 async function showCommands() {
   const commands: CommandPickItem[] = [
     {
-      label: '$(zap) Start Vite server',
+      label: '$(symbol-event) Start Vite server',
       handler() {
         start()
       },

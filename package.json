@@ -24,7 +24,7 @@
   ],
   "main": "./dist/extension.js",
   "extensionPack": [
-    "antfu.vscode-browse-lite"
+    "antfu.browse-lite"
   ],
   "contributes": {
     "commands": [
@@ -47,7 +47,7 @@
         "command": "vite.showCommands",
         "category": "Vite",
         "title": "Show commands",
-        "icon": "$(zap)"
+        "icon": "$(symbol-event)"
       }
     ],
     "menus": {
