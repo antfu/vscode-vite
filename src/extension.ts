@@ -4,6 +4,8 @@ import { commands, env, ExtensionContext, QuickPickItem, StatusBarAlignment, Sta
 import { Config, getConfig } from './config'
 import { tryPort, timeout } from './utils'
 
+const DELAY = 1500
+
 let terminal: Terminal
 let statusBar: StatusBarItem
 let active = false
@@ -63,7 +65,7 @@ function ensureStatusBar() {
 async function open(ensureActive = false, browser = Config.browser) {
   if (ensureActive && !active) {
     await start()
-    await timeout(1000)
+    await timeout(DELAY)
   }
   if (active && url) {
     if (browser === 'system')
