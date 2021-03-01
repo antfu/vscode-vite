@@ -46,9 +46,19 @@
       {
         "command": "vite.showCommands",
         "category": "Vite",
-        "title": "Show commands"
+        "title": "Show commands",
+        "icon": "$(zap)"
       }
     ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceScheme == webview-panel && browse-lite-active",
+          "command": "vite.showCommands",
+          "group": "navigation"
+        }
+      ]
+    },
     "configuration": {
       "type": "object",
       "title": "Vite",

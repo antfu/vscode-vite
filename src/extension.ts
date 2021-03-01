@@ -44,8 +44,10 @@ function ensureTerminal() {
   if (!terminal) {
     terminal = window.createTerminal('Vite')
     window.onDidCloseTerminal((e) => {
-      if (e === terminal)
+      if (e === terminal) {
         stop()
+        terminal = undefined!
+      }
     })
   }
 }
