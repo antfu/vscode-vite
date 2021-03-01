@@ -1,10 +1,8 @@
 import { join } from 'path'
 import fs from 'fs'
 import { commands, env, ExtensionContext, QuickPickItem, StatusBarAlignment, StatusBarItem, Terminal, Uri, window } from 'vscode'
-import { Config, getConfig } from './config'
+import { Config } from './config'
 import { tryPort, timeout } from './utils'
-
-const DELAY = 1500
 
 let terminal: Terminal
 let statusBar: StatusBarItem
@@ -25,8 +23,8 @@ async function start(searchPort = false) {
   stop()
 
   if (!port || searchPort)
-    port = await tryPort()
-  url = `http://localhost:${port}`
+    port = await tryPort(Config.port)
+  url = `${Config.https ? 'https' : 'http'}://${Config.host}:${port}${Config.base}`
   window.showInformationMessage(`⚡️ Vite started at ${url}`)
 
   ensureTerminal()
@@ -65,7 +63,7 @@ function ensureStatusBar() {
 async function open(ensureActive = false, browser = Config.browser) {
   if (ensureActive && !active) {
     await start()
-    await timeout(DELAY)
+    await timeout(Config.delay)
   }
   if (active && url) {
     if (browser === 'system')
@@ -143,7 +141,7 @@ export function activate(ctx: ExtensionContext) {
 
   ensureStatusBar()
 
-  if (getConfig('autoStart'))
+  if (Config.autoStart)
     open(true)
 }
 

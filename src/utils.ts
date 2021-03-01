@@ -12,9 +12,11 @@ function isPortFree(port: number) {
       })
   })
 }
+
 export function timeout(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
+
 export async function tryPort(start = 4000): Promise<number> {
   if (await isPortFree(start))
     return start

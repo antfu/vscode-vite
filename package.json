@@ -68,7 +68,7 @@
           "default": true,
           "description": "Start Vite server with VS Code"
         },
-        "vite.browser": {
+        "vite.browserType": {
           "type": "string",
           "enum": [
             "embedded",
@@ -81,6 +81,21 @@
           "type": "number",
           "default": 4000,
           "description": "Port for Vite server"
+        },
+        "vite.host": {
+          "type": "string",
+          "default": "localhost",
+          "description": "Host for Vite server"
+        },
+        "vite.base": {
+          "type": "string",
+          "default": "",
+          "description": "Base path for open the app"
+        },
+        "vite.https": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable https"
         }
       }
     }

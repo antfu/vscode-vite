@@ -7,6 +7,7 @@
 - ⚡️ Start the server when you open your editor
 - 🚀 Preview your app right inside VS Code
 - ♻️ One-click restarting the server
+- 🔋 Powered by [Browse Lite](https://github.com/antfu/vscode-browse-lite)
 
 ![Preview](https://user-images.githubusercontent.com/11247099/109450296-87a66480-7a85-11eb-985c-5dc63ba3e229.gif)
 
