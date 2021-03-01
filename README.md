@@ -15,7 +15,7 @@ This project is part of my [Sponsor Program](https://github.com/sponsors/antfu) 
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'/>
+    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.png'/>
   </a>
 </p>
 
