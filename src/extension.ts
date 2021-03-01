@@ -33,7 +33,6 @@ async function start(searchPort = false) {
   active = true
 
   ensureStatusBar()
-
   statusBar.text = '$(symbol-event) Vite'
   statusBar.color = '#ebb549'
 
@@ -66,10 +65,14 @@ async function open(ensureActive = false, browser = Config.browser) {
     await timeout(Config.delay)
   }
   if (active && url) {
-    if (browser === 'system')
+    if (browser === 'system') {
       env.openExternal(Uri.parse(url))
-    else
+    }
+    else {
+      // all the hard work are done in:
+      // https://github.com/antfu/vscode-browse-lite
       commands.executeCommand('browse-lite.open', url)
+    }
   }
 }
 
