@@ -6,9 +6,11 @@ import { tryPort, waitFor } from './utils'
 
 let terminal: Terminal
 let statusBar: StatusBarItem
+let currentMode: 'dev' | 'serve' = 'dev'
 let active = false
 let port: number
 let url: string | undefined
+let panel: any
 
 function stop() {
   active = false
@@ -19,23 +21,59 @@ function stop() {
   }
 }
 
-async function start(searchPort = false) {
+function closePanel() {
+  panel?.dispose?.()
+  panel = undefined
+}
+
+async function start({
+  mode = 'dev',
+  searchPort = !active,
+  waitForStart = true,
+} = {}) {
   stop()
+  if (mode !== currentMode)
+    closePanel()
+
+  currentMode = mode as any
 
   if (!port || searchPort)
     port = await tryPort(Config.port)
   url = `${Config.https ? 'https' : 'http'}://${Config.host}:${port}${Config.base}`
-  if (Config.notifyOnStarted)
-    window.showInformationMessage(`⚡️ Vite started at ${url}`)
 
   ensureTerminal()
-  terminal.sendText(`npx vite --port ${port}`)
+  if (mode === 'dev') {
+    terminal.sendText(`npx vite --port=${port}`)
+  }
+  else {
+    // TODO: read package.json
+    terminal.sendText('npm run build')
+    terminal.sendText(`npx live-server dist --port=${port} --no-browser`)
+  }
+
   if (Config.showTerminal)
     terminal.show(false)
+
+  if (waitForStart) {
+    if (!await waitFor(url, Config.pingInterval, Config.maximumTimeout)) {
+      window.showErrorMessage('❗️ Failed to start the server')
+      stop()
+      return { url, port }
+    }
+    else {
+      if (Config.notifyOnStarted) {
+        window.showInformationMessage(
+          mode === 'build'
+            ? `📦 Vite build served at ${url}`
+            : `⚡️ Vite started at ${url}`)
+      }
+    }
+  }
+
   active = true
 
   ensureStatusBar()
-  statusBar.text = '$(symbol-event) Vite'
+  statusBar.text = mode === 'build' ? '$(symbol-event) Vite (Build)' : '$(symbol-event) Vite'
   statusBar.color = '#ebb549'
 
   return { url, port }
@@ -61,22 +99,22 @@ function ensureStatusBar() {
   }
 }
 
-async function open(ensureActive = false, browser = Config.browser) {
-  if (ensureActive && !active) {
-    const { url } = await start()
-    if (!await waitFor(url, Config.pingInterval, Config.maximumTimeout)) {
-      window.showErrorMessage('❗️ Failed to start the server')
-      stop()
-    }
-  }
-  if (active && url) {
+async function open({
+  autoStart = false,
+  browser = Config.browser,
+} = {}) {
+  let _url = url
+  if (!active && autoStart)
+    _url = (await start()).url
+
+  if (active && _url) {
     if (browser === 'system') {
-      env.openExternal(Uri.parse(url))
+      env.openExternal(Uri.parse(_url))
     }
     else {
       // all the hard work are done in:
       // https://github.com/antfu/vscode-browse-lite
-      commands.executeCommand('browse-lite.open', url)
+      panel = await commands.executeCommand('browse-lite.open', _url)
     }
   }
 }
@@ -101,28 +139,40 @@ async function showCommands() {
       if: !active,
     },
     {
-      label: '$(refresh) Restart Vite server',
-      handler() {
-        start()
-      },
-      if: active,
-    },
-    {
       label: '$(split-horizontal) Open in embedded browser',
       description: url,
       handler() {
-        open(true, 'embedded')
+        open({ autoStart: true, browser: 'embedded' })
       },
     },
     {
       label: '$(link-external) Open in system browser',
       description: url,
       handler() {
-        open(true, 'system')
+        open({ autoStart: true, browser: 'system' })
       },
     },
     {
-      label: '$(close) Stop Vite server',
+      label: currentMode === 'dev' ? '$(refresh) Restart Vite server' : '$(symbol-event) Switch to dev server',
+      async handler() {
+        const reopen = panel && active && currentMode !== 'dev'
+        await start({ mode: 'dev', searchPort: currentMode !== 'dev' })
+        if (reopen)
+          await open({ browser: 'embedded' })
+      },
+      if: active,
+    },
+    {
+      label: active && currentMode === 'serve' ? '$(package) Rebuild and Serve' : '$(package) Build and Serve',
+      async handler() {
+        const reopen = panel && active && currentMode !== 'serve'
+        await start({ mode: 'serve', searchPort: currentMode !== 'serve' })
+        if (reopen)
+          await open({ browser: 'embedded' })
+      },
+    },
+    {
+      label: '$(close) Stop server',
       handler() {
         stop()
       },
@@ -150,7 +200,7 @@ export function activate(ctx: ExtensionContext) {
   ensureStatusBar()
 
   if (Config.autoStart)
-    open(true)
+    open({ autoStart: true })
 }
 
 export async function deactivate() {
