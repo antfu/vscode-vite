@@ -103,18 +103,23 @@ async function open({
   autoStart = false,
   browser = Config.browser,
 } = {}) {
-  let _url = url
   if (!active && autoStart)
-    _url = (await start()).url
+    await start()
 
-  if (active && _url) {
-    if (browser === 'system') {
-      env.openExternal(Uri.parse(_url))
+  if (active && url) {
+    if (browser === 'embedded') {
+      if (!panel || panel?.disposed) {
+        // all the hard work are done in:
+        // https://github.com/antfu/vscode-browse-lite
+        panel = await commands.executeCommand('browse-lite.open', url)
+      }
+      try {
+        panel?.show?.()
+      }
+      catch {}
     }
-    else {
-      // all the hard work are done in:
-      // https://github.com/antfu/vscode-browse-lite
-      panel = await commands.executeCommand('browse-lite.open', _url)
+    else if (browser === 'system') {
+      env.openExternal(Uri.parse(url))
     }
   }
 }
