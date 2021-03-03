@@ -1,11 +1,9 @@
-.vscode/**
-.vscode-test/**
-out/test/**
-out/**/*.map
-node_modules/**
-src/**
+.vscode/
+.github/
+node_modules/
+src/
 .gitignore
 package-lock.json
 .eslintrc.js
+yarn.lock
 tsconfig.json
-screenshots/**
