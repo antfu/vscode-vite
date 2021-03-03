@@ -12,8 +12,10 @@ One step <em><b>faster</b></em> for Vite
 <a href="https://marketplace.visualstudio.com/items?itemName=antfu.vite" target="__blank"><img src="https://img.shields.io/visual-studio-marketplace/v/antfu.vite.svg?color=228cb3&amp;label=" alt="Visual Studio Marketplace Version" /></a>
 </p>
 
-- ⚡️ **Start the server immediately** when you open the project
+- ⚡️ **Start the dev server immediately** when you open the project
 - 🚀 Preview / debug your app **without leaving your editor**
+- ⬢ Prompt for quick node module installs (`npm i` `yarn` `pnpm i`) when opening a fresh project
+- 📦 One-click build and serve 
 - 🔄 Restart the server with one-click
 - 🔋 Powered by [Browse Lite](https://github.com/antfu/vscode-browse-lite)
 

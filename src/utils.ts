@@ -1,10 +1,9 @@
-import { createServer } from 'http'
-import http = require('http')
-import https = require('https')
+import http from 'http'
+import https from 'https'
 
 function isPortFree(port: number) {
   return new Promise((resolve) => {
-    const server = createServer()
+    const server = http.createServer()
       .listen(port, () => {
         server.close()
         resolve(true)

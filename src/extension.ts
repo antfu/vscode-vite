@@ -2,7 +2,7 @@ import { join } from 'path'
 import fs from 'fs'
 import { commands, env, ExtensionContext, QuickPickItem, StatusBarAlignment, StatusBarItem, Terminal, Uri, window } from 'vscode'
 import { Config } from './config'
-import { tryPort, waitFor } from './utils'
+import { timeout, tryPort, waitFor } from './utils'
 
 let terminal: Terminal
 let statusBar: StatusBarItem
@@ -51,9 +51,6 @@ async function start({
     terminal.sendText(`npx live-server dist --port=${port} --no-browser`)
   }
 
-  if (Config.showTerminal)
-    terminal.show(false)
-
   if (waitForStart) {
     if (!await waitFor(url, Config.pingInterval, Config.maximumTimeout)) {
       window.showErrorMessage('❗️ Failed to start the server')
@@ -88,7 +85,10 @@ function ensureTerminal() {
         terminal = undefined!
       }
     })
+    if (Config.showTerminal)
+      terminal.show(false)
   }
+  return terminal
 }
 
 function ensureStatusBar() {
@@ -122,6 +122,18 @@ async function open({
 function isViteProject() {
   return fs.existsSync(join(Config.root, 'vite.config.ts'))
   || fs.existsSync(join(Config.root, 'vite.config.js'))
+}
+
+function hasNodeModules() {
+  return fs.existsSync(join(Config.root, 'node_modules'))
+}
+
+function getNi() {
+  if (fs.existsSync(join(Config.root, 'pnpm-lock.yaml')))
+    return 'pnpm i'
+  else if (fs.existsSync(join(Config.root, 'yarn.lock')))
+    return 'yarn'
+  return 'npm i'
 }
 
 interface CommandPickItem extends QuickPickItem {
@@ -188,7 +200,7 @@ async function showCommands() {
     result.handler?.()
 }
 
-export function activate(ctx: ExtensionContext) {
+export async function activate(ctx: ExtensionContext) {
   commands.registerCommand('vite.stop', stop)
   commands.registerCommand('vite.restart', start)
   commands.registerCommand('vite.open', () => open())
@@ -199,8 +211,24 @@ export function activate(ctx: ExtensionContext) {
 
   ensureStatusBar()
 
-  if (Config.autoStart)
+  if (Config.autoStart) {
+    if (!hasNodeModules()) {
+      const ni = getNi()
+      const result = await window.showWarningMessage(
+        'Vite: It seems like you didn\'t have node modules installed, would you like to install it now?',
+        `Install (${ni})`,
+        'Cancel',
+      )
+      if (result && result !== 'Cancel') {
+        ensureTerminal().sendText(ni)
+        await timeout(5000)
+      }
+      else {
+        return
+      }
+    }
     open({ autoStart: true })
+  }
 }
 
 export async function deactivate() {
