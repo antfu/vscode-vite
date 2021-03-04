@@ -28,3 +28,8 @@ export async function open({
     catch { }
   }
 }
+
+export function closePanel() {
+  ctx.panel?.dispose?.()
+  ctx.panel = undefined
+}

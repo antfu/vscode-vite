@@ -10,6 +10,7 @@ export interface Context {
   url?: string
   panel?: any
 }
+
 export const ctx = {
   active: false,
   currentMode: 'dev',

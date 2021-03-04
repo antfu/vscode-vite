@@ -1,4 +1,4 @@
-import { StatusBarAlignment, window } from 'vscode'
+import { window } from 'vscode'
 import { Config } from './config'
 import { ctx } from './Context'
 import { stop } from './start'
@@ -16,14 +16,6 @@ export function ensureTerminal() {
   })
   if (Config.showTerminal)
     ctx.terminal.show(false)
-}
-
-export function ensureStatusBar() {
-  if (!ctx.statusBar) {
-    ctx.statusBar = window.createStatusBarItem(StatusBarAlignment.Right, 1000)
-    ctx.statusBar.command = 'vite.showCommands'
-    ctx.statusBar.show()
-  }
 }
 
 export function closeTerminal() {

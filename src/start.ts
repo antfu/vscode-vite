@@ -2,7 +2,9 @@ import { window } from 'vscode'
 import { Config } from './config'
 import { tryPort, waitFor } from './utils'
 import { ctx } from './Context'
-import { ensureStatusBar, closeTerminal, executeCommand } from './terminal'
+import { closeTerminal, executeCommand } from './terminal'
+import { ensureStatusBar } from './statusBar'
+import { closePanel } from './open'
 
 export async function start({
   mode = 'dev',
@@ -57,9 +59,4 @@ export function stop() {
     ctx.statusBar.text = '$(stop-circle) Vite'
     ctx.statusBar.color = undefined
   }
-}
-
-function closePanel() {
-  ctx.panel?.dispose?.()
-  ctx.panel = undefined
 }
