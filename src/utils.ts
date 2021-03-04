@@ -1,5 +1,8 @@
 import http from 'http'
 import https from 'https'
+import { join } from 'path'
+import fs from 'fs'
+import { Config } from './config'
 
 function isPortFree(port: number) {
   return new Promise((resolve) => {
@@ -56,4 +59,21 @@ export async function waitFor(url: string, interval = 200, max = 30_000) {
   }
 
   return false
+}
+
+export function isViteProject() {
+  return fs.existsSync(join(Config.root, 'vite.config.ts'))
+  || fs.existsSync(join(Config.root, 'vite.config.js'))
+}
+
+export function hasNodeModules() {
+  return fs.existsSync(join(Config.root, 'node_modules'))
+}
+
+export function getNi() {
+  if (fs.existsSync(join(Config.root, 'pnpm-lock.yaml')))
+    return 'pnpm i'
+  else if (fs.existsSync(join(Config.root, 'yarn.lock')))
+    return 'yarn'
+  return 'npm i'
 }
