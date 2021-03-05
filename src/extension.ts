@@ -4,7 +4,8 @@ import { Config } from './config'
 import { getNi, hasNodeModules, isViteProject, timeout } from './utils'
 import { ctx } from './Context'
 import { closeTerminal, executeCommand } from './terminal'
-import { ensureStatusBar } from './statusBar'
+import { tryRecoverState } from './recover'
+import { updateStatusBar } from './statusBar'
 import { showCommands } from './showCommands'
 import { start, stop } from './start'
 import { open } from './open'
@@ -16,10 +17,19 @@ export async function activate(ext: ExtensionContext) {
   commands.registerCommand('vite.open', () => open())
   commands.registerCommand('vite.showCommands', showCommands)
 
+  window.onDidCloseTerminal((e) => {
+    if (e === ctx.terminal) {
+      stop()
+      ctx.terminal = undefined!
+    }
+  })
+
   if (!isViteProject())
     return
 
-  ensureStatusBar()
+  await tryRecoverState()
+
+  updateStatusBar()
 
   if (Config.autoStart) {
     if (!hasNodeModules()) {

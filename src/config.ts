@@ -49,3 +49,7 @@ export const Config = {
     return getConfig('base', '')!
   },
 }
+
+export function composeUrl(port: number) {
+  return `${Config.https ? 'https' : 'http'}://${Config.host}:${port}${Config.base}`
+}

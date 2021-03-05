@@ -1,9 +1,9 @@
 import { window } from 'vscode'
-import { Config } from './config'
+import { composeUrl, Config } from './config'
 import { tryPort, waitFor } from './utils'
 import { ctx } from './Context'
-import { closeTerminal, executeCommand } from './terminal'
-import { ensureStatusBar } from './statusBar'
+import { endProcess, executeCommand } from './terminal'
+import { updateStatusBar } from './statusBar'
 import { closePanel } from './open'
 
 export async function start({
@@ -19,7 +19,9 @@ export async function start({
 
   if (!ctx.port || searchPort)
     ctx.port = await tryPort(Config.port)
-  ctx.url = `${Config.https ? 'https' : 'http'}://${Config.host}:${ctx.port}${Config.base}`
+  ctx.url = composeUrl(ctx.port)
+
+  ctx.ext.globalState.update('port', ctx.port)
 
   if (mode === 'dev') {
     executeCommand(`npx vite --port=${ctx.port}`)
@@ -47,16 +49,11 @@ export async function start({
 
   ctx.active = true
 
-  ensureStatusBar()
-  ctx.statusBar.text = mode === 'build' ? '$(symbol-event) Vite (Build)' : '$(symbol-event) Vite'
-  ctx.statusBar.color = '#ebb549'
+  updateStatusBar()
 }
 
 export function stop() {
   ctx.active = false
-  closeTerminal()
-  if (ctx.statusBar) {
-    ctx.statusBar.text = '$(stop-circle) Vite'
-    ctx.statusBar.color = undefined
-  }
+  endProcess()
+  updateStatusBar()
 }

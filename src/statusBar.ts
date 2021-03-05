@@ -8,3 +8,17 @@ export function ensureStatusBar() {
     ctx.statusBar.show()
   }
 }
+
+export function updateStatusBar() {
+  ensureStatusBar()
+  if (ctx.active) {
+    ctx.statusBar.text = ctx.currentMode === 'serve'
+      ? '$(symbol-event) Vite (Build)'
+      : '$(symbol-event) Vite'
+    ctx.statusBar.color = '#ebb549'
+  }
+  else {
+    ctx.statusBar.text = '$(stop-circle) Vite'
+    ctx.statusBar.color = undefined
+  }
+}

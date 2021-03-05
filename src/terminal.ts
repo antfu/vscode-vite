@@ -1,35 +1,40 @@
 import { window } from 'vscode'
 import { Config } from './config'
 import { ctx } from './Context'
-import { stop } from './start'
+import { timeout } from './utils'
 
 export function ensureTerminal() {
-  if (ctx.terminal)
+  if (isTerminalActive())
     return
 
   ctx.terminal = window.createTerminal('Vite')
-  window.onDidCloseTerminal((e) => {
-    if (e === ctx.terminal) {
-      stop()
-      ctx.terminal = undefined!
-    }
-  })
-  if (Config.showTerminal)
-    ctx.terminal.show(false)
+}
+
+export function isTerminalActive() {
+  return ctx.terminal && ctx.terminal.exitStatus == null
 }
 
 export function closeTerminal() {
-  if (ctx.terminal) {
+  if (isTerminalActive()) {
     ctx.terminal.sendText('\x03')
     ctx.terminal.dispose()
+    ctx.terminal = undefined!
   }
 }
 
 export function endProcess() {
-  ctx.terminal?.sendText('\x03')
+  if (isTerminalActive())
+    ctx.terminal.sendText('\x03')
+  ctx.ext.globalState.update('pid', undefined)
 }
 
-export function executeCommand(cmd: string) {
+export async function executeCommand(cmd: string) {
   ensureTerminal()
   ctx.terminal.sendText(cmd)
+  if (Config.showTerminal)
+    ctx.terminal.show(false)
+  await timeout(2000)
+  const pid = await ctx.terminal.processId
+  if (pid)
+    ctx.ext.globalState.update('pid', pid)
 }
