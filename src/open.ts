@@ -6,9 +6,10 @@ import { start } from './start'
 export async function open({
   autoStart = false,
   browser = Config.browser,
+  stopPrevious = true,
 } = {}) {
   if (!ctx.active && autoStart)
-    await start()
+    await start({ stopPrevious })
 
   if (!ctx.active || !ctx.url)
     return

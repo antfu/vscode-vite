@@ -72,8 +72,8 @@ export function hasNodeModules() {
 
 export function getNi() {
   if (fs.existsSync(join(Config.root, 'pnpm-lock.yaml')))
-    return 'pnpm i'
+    return 'pnpm install'
   else if (fs.existsSync(join(Config.root, 'yarn.lock')))
-    return 'yarn'
-  return 'npm i'
+    return 'yarn install'
+  return 'npm install'
 }

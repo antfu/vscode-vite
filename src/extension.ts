@@ -47,7 +47,7 @@ export async function activate(ext: ExtensionContext) {
         return
       }
     }
-    open({ autoStart: true })
+    open({ autoStart: true, stopPrevious: false })
   }
 }
 

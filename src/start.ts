@@ -10,8 +10,10 @@ export async function start({
   mode = 'dev',
   searchPort = !ctx.active,
   waitForStart = true,
+  stopPrevious = true,
 } = {}) {
-  stop()
+  if (stopPrevious)
+    stop()
   if (mode !== ctx.currentMode)
     closePanel()
 
