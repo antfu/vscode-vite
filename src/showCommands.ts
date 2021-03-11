@@ -2,6 +2,7 @@ import { QuickPickItem, window } from 'vscode'
 import { ctx } from './Context'
 import { open } from './open'
 import { start, stop } from './start'
+import { getName } from './utils'
 
 interface CommandPickItem extends QuickPickItem {
   handler?: () => void
@@ -11,7 +12,9 @@ interface CommandPickItem extends QuickPickItem {
 export async function showCommands() {
   const commands: CommandPickItem[] = [
     {
-      label: '$(symbol-event) Start Vite server',
+      label: ctx.command === 'vitepress'
+        ? '$(repo) Start VitePress server'
+        : '$(symbol-event) Start Vite server',
       handler() {
         start()
       },
@@ -32,7 +35,9 @@ export async function showCommands() {
       },
     },
     {
-      label: ctx.currentMode === 'dev' ? '$(refresh) Restart Vite server' : '$(symbol-event) Switch to dev server',
+      label: ctx.currentMode === 'dev'
+        ? `$(refresh) Restart ${getName(ctx.command)} server`
+        : '$(symbol-event) Switch to dev server',
       async handler() {
         const reopen = ctx.panel && ctx.active && ctx.currentMode !== 'dev'
         await start({ mode: 'dev', searchPort: ctx.currentMode !== 'dev' })
@@ -42,7 +47,9 @@ export async function showCommands() {
       if: ctx.active,
     },
     {
-      label: ctx.active && ctx.currentMode === 'serve' ? '$(package) Rebuild and Serve' : '$(package) Build and Serve',
+      label: ctx.active && ctx.currentMode === 'serve'
+        ? '$(package) Rebuild and Serve'
+        : '$(package) Build and Serve',
       async handler() {
         const reopen = ctx.panel && ctx.active && ctx.currentMode !== 'serve'
         await start({ mode: 'serve', searchPort: ctx.currentMode !== 'serve' })

@@ -1,7 +1,7 @@
 
 import { commands, ExtensionContext, window } from 'vscode'
 import { Config } from './config'
-import { getNi, hasNodeModules, isViteProject, timeout } from './utils'
+import { getNi, hasDependencies, hasNodeModules, isViteProject, loadPackageJSON, timeout } from './utils'
 import { ctx } from './Context'
 import { closeTerminal, executeCommand } from './terminal'
 import { tryRecoverState } from './recover'
@@ -24,8 +24,13 @@ export async function activate(ext: ExtensionContext) {
     }
   })
 
+  ctx.packageJSON = loadPackageJSON()
+
   if (!isViteProject())
     return
+
+  if (Config.vitepress && hasDependencies('vitepress'))
+    ctx.command = 'vitepress'
 
   await tryRecoverState()
 

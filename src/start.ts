@@ -1,6 +1,6 @@
 import { window } from 'vscode'
 import { composeUrl, Config } from './config'
-import { tryPort, waitFor } from './utils'
+import { getName, tryPort, waitFor } from './utils'
 import { ctx } from './Context'
 import { endProcess, executeCommand } from './terminal'
 import { updateStatusBar } from './statusBar'
@@ -26,11 +26,11 @@ export async function start({
   ctx.ext.globalState.update('port', ctx.port)
 
   if (mode === 'dev') {
-    executeCommand(`npx vite --port=${ctx.port}`)
+    executeCommand(`npx ${ctx.command} --port=${ctx.port}`)
   }
   else {
-    // TODO: read package.json
-    executeCommand('npm run build')
+    if (Config.buildCommand)
+      executeCommand(Config.buildCommand)
     executeCommand(`npx live-server dist --port=${ctx.port} --no-browser`)
   }
 
@@ -43,8 +43,8 @@ export async function start({
       if (Config.notifyOnStarted) {
         window.showInformationMessage(
           mode === 'build'
-            ? `📦 Vite build served at ${ctx.url}`
-            : `⚡️ Vite started at ${ctx.url}`)
+            ? `📦 ${getName(ctx.command)} build served at ${ctx.url}`
+            : `⚡️ ${getName(ctx.command)} started at ${ctx.url}`)
       }
     }
   }

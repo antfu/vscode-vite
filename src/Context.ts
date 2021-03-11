@@ -1,4 +1,5 @@
 import { ExtensionContext, StatusBarItem, Terminal } from 'vscode'
+import type { PackageJson } from 'types-package-json'
 
 export interface Context {
   ext: ExtensionContext
@@ -9,6 +10,8 @@ export interface Context {
   port?: number
   url?: string
   panel?: any
+  command: 'vite' | 'vitepress'
+  packageJSON?: Partial<PackageJson>
 }
 
 export const ctx = {

@@ -17,8 +17,8 @@ One step <em><b>faster</b></em> for Vite
 - ⬢ Prompt for quick node module installs (`npm i` `yarn` `pnpm i`) when opening a fresh project
 - 📦 One-click build and serve 
 - 🔄 Restart the server with one-click
+- 📚 Support for VitePress
 - 🔋 Powered by [Browse Lite](https://github.com/antfu/vscode-browse-lite)
-
 
 <p align="center">
 <img alt="Demo" src="https://user-images.githubusercontent.com/11247099/109450296-87a66480-7a85-11eb-985c-5dc63ba3e229.gif">

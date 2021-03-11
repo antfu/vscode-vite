@@ -11,14 +11,28 @@ export function ensureStatusBar() {
 
 export function updateStatusBar() {
   ensureStatusBar()
-  if (ctx.active) {
-    ctx.statusBar.text = ctx.currentMode === 'serve'
-      ? '$(symbol-event) Vite (Build)'
-      : '$(symbol-event) Vite'
-    ctx.statusBar.color = '#ebb549'
+  if (ctx.command === 'vitepress') {
+    if (ctx.active) {
+      ctx.statusBar.text = ctx.currentMode === 'serve'
+        ? '$(repo) VitePress (Build)'
+        : '$(repo) VitePress'
+      ctx.statusBar.color = '#42b883'
+    }
+    else {
+      ctx.statusBar.text = '$(stop-circle) VitePress'
+      ctx.statusBar.color = undefined
+    }
   }
   else {
-    ctx.statusBar.text = '$(stop-circle) Vite'
-    ctx.statusBar.color = undefined
+    if (ctx.active) {
+      ctx.statusBar.text = ctx.currentMode === 'serve'
+        ? '$(symbol-event) Vite (Build)'
+        : '$(symbol-event) Vite'
+      ctx.statusBar.color = '#ebb549'
+    }
+    else {
+      ctx.statusBar.text = '$(stop-circle) Vite'
+      ctx.statusBar.color = undefined
+    }
   }
 }

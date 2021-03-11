@@ -48,6 +48,14 @@ export const Config = {
   get base() {
     return getConfig('base', '')!
   },
+
+  get vitepress() {
+    return getConfig('vitepress', false)!
+  },
+
+  get buildCommand() {
+    return getConfig('buildCommand', 'npm run build')!
+  },
 }
 
 export function composeUrl(port: number) {
