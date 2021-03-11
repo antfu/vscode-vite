@@ -24,6 +24,7 @@ One step <em><b>faster</b></em> for Vite
 <img alt="Demo" src="https://user-images.githubusercontent.com/11247099/109450296-87a66480-7a85-11eb-985c-5dc63ba3e229.gif">
 <img alt="Preview 1" src="https://user-images.githubusercontent.com/11247099/109469316-d6192a80-7aa8-11eb-8a3b-d2d52bef34e4.png">
 <img alt="Preview 2" src="https://user-images.githubusercontent.com/11247099/109469308-d1547680-7aa8-11eb-9957-23a4d8ac35e6.png">
+<img alt="Preview 3" src="https://user-images.githubusercontent.com/11247099/110799208-e786e180-82b5-11eb-96e7-71be27ca0df8.png">
 </p>
 
 ## Sponsors
