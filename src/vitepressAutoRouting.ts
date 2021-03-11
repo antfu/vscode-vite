@@ -23,7 +23,7 @@ export function enableVitepressAutoRouting() {
       return
 
     const url = `${composeUrl(ctx.port!)}/${path}`
-    console.log('vp', path, url)
+    // console.log('vp', path, url)
 
     try {
       ctx.panel?.navigateTo(url)
