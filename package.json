@@ -109,7 +109,7 @@
         },
         "vite.showTerminal": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Force on terminal when server starts"
         },
         "vite.notifyOnStarted": {

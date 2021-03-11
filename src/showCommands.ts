@@ -58,6 +58,13 @@ export async function showCommands() {
       },
     },
     {
+      label: '$(terminal) Show Terminal',
+      handler() {
+        stop()
+      },
+      if: ctx.active,
+    },
+    {
       label: '$(close) Stop server',
       handler() {
         stop()

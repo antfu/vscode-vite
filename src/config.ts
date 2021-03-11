@@ -26,7 +26,7 @@ export const Config = {
   },
 
   get showTerminal() {
-    return getConfig('showTerminal', true)!
+    return getConfig('showTerminal', false)!
   },
 
   get notifyOnStarted() {
