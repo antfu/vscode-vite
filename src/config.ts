@@ -50,7 +50,15 @@ export const Config = {
   },
 
   get vitepress() {
-    return getConfig('vitepress', false)!
+    return getConfig('vitepress', true)!
+  },
+
+  get vitepressAutoRouting() {
+    return getConfig('vitepressAutoRouting', false)!
+  },
+
+  get vitepressBase() {
+    return getConfig('vitepressBase', '')!
   },
 
   get buildCommand() {

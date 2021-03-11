@@ -117,15 +117,25 @@
           "default": true,
           "description": "Send notification when server starts"
         },
+        "vite.buildCommand": {
+          "type": "string",
+          "default": "npm run build",
+          "description": "Command for build"
+        },
         "vite.vitepress": {
           "type": "boolean",
           "default": true,
           "description": "Use vitepress if available"
         },
-        "vite.buildCommand": {
+        "vite.vitepressBase": {
           "type": "string",
-          "default": "npm run build",
-          "description": "Command for build"
+          "default": "",
+          "description": "Base path for Vitepress"
+        },
+        "vite.vitepressAutoRouting": {
+          "type": "boolean",
+          "default": false,
+          "description": "Navigate to the page you are working on"
         }
       }
     }

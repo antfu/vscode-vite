@@ -26,12 +26,24 @@ export async function start({
   ctx.ext.globalState.update('port', ctx.port)
 
   if (mode === 'dev') {
-    executeCommand(`npx ${ctx.command} --port=${ctx.port}`)
+    if (ctx.command === 'vitepress') {
+      executeCommand(Config.vitepressBase
+        ? `npx vitepress dev ${Config.vitepressBase} --port=${ctx.port}`
+        : `npx vitepress --port=${ctx.port}`)
+    }
+    else { executeCommand(`npx vite --port=${ctx.port}`) }
   }
   else {
     if (Config.buildCommand)
       executeCommand(Config.buildCommand)
-    executeCommand(`npx live-server dist --port=${ctx.port} --no-browser`)
+    if (ctx.command === 'vitepress') {
+      let path = '.vitepress/dist'
+      if (Config.vitepressBase)
+        path = `${Config.vitepressBase}/${path}`
+
+      executeCommand(`npx live-server ${path} --port=${ctx.port} --no-browser`)
+    }
+    else { executeCommand(`npx live-server dist --port=${ctx.port} --no-browser`) }
   }
 
   if (waitForStart) {
