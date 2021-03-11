@@ -18,7 +18,7 @@ export async function tryRecoverTerminal() {
 
   const terminal = terminals.find(i => i)
 
-  console.log('terminal!!')
+  // console.log('terminal!!')
 
   if (terminal) {
     ctx.terminal = terminal
@@ -35,12 +35,12 @@ export async function tryRecoverState() {
 
   const url = composeUrl(port)
 
-  console.log('port!!', port, url)
+  // console.log('port!!', port, url)
 
   if (!await ping(url))
     return
 
-  console.log('active!!')
+  // console.log('active!!')
 
   ctx.active = true
   ctx.url = url

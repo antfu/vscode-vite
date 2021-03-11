@@ -9,6 +9,7 @@ import { updateStatusBar } from './statusBar'
 import { showCommands } from './showCommands'
 import { start, stop } from './start'
 import { open } from './open'
+import { enableVitepressAutoRouting } from './vitepressAutoRouting'
 
 export async function activate(ext: ExtensionContext) {
   ctx.ext = ext
@@ -29,8 +30,11 @@ export async function activate(ext: ExtensionContext) {
   if (!isViteProject())
     return
 
-  if (Config.vitepress && hasDependencies('vitepress'))
+  if (Config.vitepress && hasDependencies('vitepress')) {
     ctx.command = 'vitepress'
+    if (Config.vitepressAutoRouting)
+      enableVitepressAutoRouting()
+  }
 
   await tryRecoverState()
 

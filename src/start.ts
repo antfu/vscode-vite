@@ -31,7 +31,9 @@ export async function start({
         ? `npx vitepress dev ${Config.vitepressBase} --port=${ctx.port}`
         : `npx vitepress --port=${ctx.port}`)
     }
-    else { executeCommand(`npx vite --port=${ctx.port}`) }
+    else {
+      executeCommand(`npx vite --port=${ctx.port}`)
+    }
   }
   else {
     if (Config.buildCommand)
@@ -43,7 +45,9 @@ export async function start({
 
       executeCommand(`npx live-server ${path} --port=${ctx.port} --no-browser`)
     }
-    else { executeCommand(`npx live-server dist --port=${ctx.port} --no-browser`) }
+    else {
+      executeCommand(`npx live-server dist --port=${ctx.port} --no-browser`)
+    }
   }
 
   if (waitForStart) {
