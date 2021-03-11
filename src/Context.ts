@@ -17,4 +17,5 @@ export interface Context {
 export const ctx = {
   active: false,
   currentMode: 'dev',
+  command: 'vite',
 } as Context
