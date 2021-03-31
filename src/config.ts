@@ -64,6 +64,10 @@ export const Config = {
   get buildCommand() {
     return getConfig('buildCommand', 'npm run build')!
   },
+
+  get devCommand(): string | undefined {
+    return getConfig('devCommand')
+  },
 }
 
 export function composeUrl(port: number) {
