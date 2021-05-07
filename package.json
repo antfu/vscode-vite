@@ -140,6 +140,11 @@
           "type": "boolean",
           "default": false,
           "description": "Navigate to the page you are working on"
+        },
+        "vite.open": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open app on server ready"
         }
       }
     }

@@ -56,7 +56,8 @@ export async function activate(ext: ExtensionContext) {
         return
       }
     }
-    open({ autoStart: true, stopPrevious: false })
+    if (Config.open)
+      open({ autoStart: true, stopPrevious: false })
   }
 }
 

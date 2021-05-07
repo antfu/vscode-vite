@@ -68,6 +68,10 @@ export const Config = {
   get devCommand(): string | undefined {
     return getConfig('devCommand')
   },
+
+  get open(): boolean {
+    return getConfig('open') ?? true
+  },
 }
 
 export function composeUrl(port: number) {
