@@ -153,7 +153,7 @@
     "vscode:prepublish": "npm run build",
     "build": "tsup src/extension.ts --dts --external=vscode",
     "dev": "npm run build -- --watch",
-    "release": "npx bumpp --commit --tag --push && vsce publish"
+    "release": "npx bumpp --commit --tag --push"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.6.2",
