@@ -1,6 +1,7 @@
 import { window } from 'vscode'
+import { getPort } from 'get-port-please'
 import { composeUrl, Config } from './config'
-import { getName, tryPort, waitFor } from './utils'
+import { getHost, getName, waitFor } from './utils'
 import { ctx } from './Context'
 import { endProcess, executeCommand } from './terminal'
 import { updateStatusBar } from './statusBar'
@@ -20,7 +21,8 @@ export async function start({
   ctx.currentMode = mode as any
 
   if (!ctx.port || searchPort)
-    ctx.port = await tryPort(Config.port)
+    ctx.port = await getPort({ port: Config.port, portRange: [Config.port, Config.port + 100], host: getHost() })
+
   ctx.url = composeUrl(ctx.port)
 
   ctx.ext.globalState.update('port', ctx.port)

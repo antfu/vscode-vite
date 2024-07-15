@@ -2,30 +2,23 @@ import http from 'http'
 import https from 'https'
 import { join } from 'path'
 import fs from 'fs'
+import os from 'os'
 import { Config } from './config'
 import { ctx } from './Context'
-
-function isPortFree(port: number) {
-  return new Promise((resolve) => {
-    const server = http.createServer()
-      .listen(port, () => {
-        server.close()
-        resolve(true)
-      })
-      .on('error', () => {
-        resolve(false)
-      })
-  })
-}
 
 export function timeout(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export async function tryPort(start = 4000): Promise<number> {
-  if (await isPortFree(start))
-    return start
-  return tryPort(start + 1)
+export function getHost() {
+  const interfaces = os.networkInterfaces()
+
+  for (const ifaceDetails of Object.values(interfaces)) {
+    if (ifaceDetails != null && ifaceDetails.some(iface => iface.family === 'IPv6' && !iface.internal))
+      return '::1'
+  }
+
+  return '127.0.0.1'
 }
 
 export function ping(url: string) {
